@@ -74,9 +74,9 @@ int Renderer::init()
 	return 0;
 }
 
-void Renderer::renderSprite(Sprite* sprite, float px, float py, float sx, float sy, float rot)
+void Renderer::renderSprite(Camera* camera, Sprite* sprite, float px, float py, float sx, float sy, float rot)
 {
-	glm::mat4 viewMatrix  = getViewMatrix(); // get from Camera (Camera position and direction)
+	glm::mat4 viewMatrix  = camera->getViewMatrix(); // get from Camera (Camera position and direction)
 	glm::mat4 modelMatrix = glm::mat4(1.0f);
 
 	// Build the Model matrix
@@ -131,6 +131,15 @@ void Renderer::renderSprite(Sprite* sprite, float px, float py, float sx, float 
 
 	glDisableVertexAttribArray(vertexPosition_modelspaceID);
 	glDisableVertexAttribArray(vertexUVID);
+}
+
+void Renderer::renderEntity(Entity* entity, float px, float py, float sx, float sy, float rot) {
+
+	glm::vec3 entityPos = glm::vec3(entity->position.x, entity->position.y, entity->position.z);
+	glm::vec3 entityScale = glm::vec3(entity->scale.x, entity->scale.y, entity->scale.z);
+	glm::vec3 entityRot = glm::vec3(entity->rotation.x, entity->rotation.y, entity->rotation.z);
+
+
 }
 
 GLuint Renderer::loadShaders(const char* vertex_file_path, const char* fragment_file_path)

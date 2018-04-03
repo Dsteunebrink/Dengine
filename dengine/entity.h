@@ -45,6 +45,9 @@ public:
 	/// @brief get the list of children.
 	/// @return std::vector<Entity*>& _children
 	const std::vector<Entity*>& children() { return _children; };
+	/// @brief get the spritebatch of this Entity.
+	/// @return std::vector<Sprite*>& _spritebatch
+	std::vector<Sprite*>& spritebatch() { return _spritebatch; };
 
 	// sprite
 	/// @brief get the Sprite from this Entity.
@@ -72,8 +75,10 @@ public:
 	friend class Renderer;
 
 private:
-	Entity* _parent; ///< @brief The _parent of this Entity
+	Entity* _parent; ///< @brief The _parent of this Entity4
 	std::vector<Entity*> _children; ///< @brief The _children of this Entity
+
+	std::vector<Sprite*> _spritebatch; ///< @brief The _spritebatch of this Entity
 
 	// sprite
 	Sprite* _sprite; ///< @brief The _sprite of this Entity
@@ -83,6 +88,14 @@ private:
 			delete _sprite;
 			_sprite = NULL;
 		}
+	};
+
+	void deleteSpritebatch() {
+		int s = _spritebatch.size();
+		for (int i = 0; i < s; i++) {
+			delete _spritebatch[i];
+		}
+		_spritebatch.clear();
 	};
 };
 

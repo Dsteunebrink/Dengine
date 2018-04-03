@@ -9,6 +9,7 @@
 #include <glm/gtx/euler_angles.hpp>
 
 #include <dengine/sprite.h>
+#include <dengine/entity.h>
 
 class Renderer
 {
@@ -16,7 +17,8 @@ class Renderer
 		Renderer(unsigned int w, unsigned int h);
 		virtual ~Renderer();
 
-		void renderSprite(Sprite* sprite, float px, float py, float sx, float sy, float rot);
+		void renderSprite(Camera* camera, Sprite* sprite, float px, float py, float sx, float sy, float rot);
+		void renderEntity(Entity* entity, float px, float py, float sx, float sy, float rot);
 		GLFWwindow* window() { return _window; };
 
 		unsigned int width() { return _window_width; };

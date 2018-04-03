@@ -8,8 +8,21 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtx/euler_angles.hpp>
 
-void computeMatricesFromInputs(GLFWwindow* window);
-glm::mat4 getViewMatrix();
-glm::vec3 getCursor();
+class Camera {
+public:
+
+	Camera();
+
+	virtual ~Camera(); ///< @brief Destructor of an Entity
+
+	void computeMatricesFromInputs(GLFWwindow* window);
+	glm::mat4 getViewMatrix();
+	glm::vec3 getCursor();
+
+private:
+
+};
+
+
 
 #endif
