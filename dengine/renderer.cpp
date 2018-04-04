@@ -133,13 +133,38 @@ void Renderer::renderSprite(Camera* camera, Sprite* sprite, float px, float py, 
 	glDisableVertexAttribArray(vertexUVID);
 }
 
-void Renderer::renderEntity(Entity* entity, float px, float py, float sx, float sy, float rot) {
+void Renderer::renderEntity(glm::mat4 modelMatrix, Entity* entity, Camera* camera) {
 
-	glm::vec3 entityPos = glm::vec3(entity->position.x, entity->position.y, entity->position.z);
-	glm::vec3 entityScale = glm::vec3(entity->scale.x, entity->scale.y, entity->scale.z);
-	glm::vec3 entityRot = glm::vec3(entity->rotation.x, entity->rotation.y, entity->rotation.z);
+	// OpenGL doesn't understand our Point3. Make it glm::vec3 compatible.
+	glm::vec3 position = glm::vec3(entity->position.x, entity->position.y, entity->position.z);
+	glm::vec3 rotation = glm::vec3(entity->rotation.x, entity->rotation.y, entity->rotation.z);
+	glm::vec3 scale = glm::vec3(entity->scale.x, entity->scale.y, entity->scale.z);
 
+	// Build the Model matrix
+	glm::mat4 translationMatrix = glm::translate(glm::mat4(1.0f), position);
+	glm::mat4 rotationMatrix = glm::eulerAngleYXZ(rotation.y, rotation.x, rotation.z);
+	glm::mat4 scalingMatrix = glm::scale(glm::mat4(1.0f), scale);
 
+	glm::mat4 mm = translationMatrix * rotationMatrix * scalingMatrix;
+
+	// multiply ModelMatrix for this entity with the ModelMatrix of its parent (the caller of this method)
+	// the first time we do this (for the root-parent), modelMatrix is identity.
+	modelMatrix *= mm;
+
+	// send the real world transforms back to Entity (glm::decompose is experimental)
+	glm::vec3 realscale;
+	glm::quat realrot;
+	glm::vec3 realpos;
+	glm::vec3 skew;
+	glm::vec4 perspective;
+	glm::decompose(modelMatrix, realscale, realrot, realpos, skew, perspective);
+	// #######################################################
+
+	// Check for Sprites to see if we need to render anything
+	Sprite* sprite = entity->sprite();
+	if (sprite != NULL) {
+		this->renderSprite(camera, sprite, position.x, position.y, scale.x, scale.y, rotation.z);
+	}
 }
 
 GLuint Renderer::loadShaders(const char* vertex_file_path, const char* fragment_file_path)
