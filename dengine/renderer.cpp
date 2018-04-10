@@ -4,7 +4,6 @@
 #include <vector>
 #include <fstream>
 
-#include <dengine/camera.h>
 #include <dengine/renderer.h>
 
 Renderer::Renderer(unsigned int w, unsigned int h)
@@ -92,14 +91,14 @@ void Renderer::renderSprite(Camera* camera, Sprite* sprite, float px, float py, 
 	// in the "MVP" uniform
 	GLuint matrixID = glGetUniformLocation(_programID, "MVP");
 	glUniformMatrix4fv(matrixID, 1, GL_FALSE, &MVP[0][0]);
-
+	
 	// Bind our texture in Texture Unit 0
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, sprite->texture());
 	// Set our "myTextureSampler" sampler to user Texture Unit 0
 	GLuint textureID  = glGetUniformLocation(_programID, "myTextureSampler");
 	glUniform1i(textureID, 0);
-
+	
 	// 1st attribute buffer : vertices
 	GLuint vertexPosition_modelspaceID = glGetAttribLocation(_programID, "vertexPosition_modelspace");
 	glEnableVertexAttribArray(vertexPosition_modelspaceID);
@@ -112,7 +111,7 @@ void Renderer::renderSprite(Camera* camera, Sprite* sprite, float px, float py, 
 		0,							// stride
 		(void*)0					  // array buffer offset
 	);
-
+	
 	// 2nd attribute buffer : UVs
 	GLuint vertexUVID = glGetAttribLocation(_programID, "vertexUV");
 	glEnableVertexAttribArray(vertexUVID);
@@ -123,9 +122,9 @@ void Renderer::renderSprite(Camera* camera, Sprite* sprite, float px, float py, 
 		GL_FLOAT,					 // type
 		GL_FALSE,					 // normalized?
 		0,							// stride
-		(void*)0					  // array buffer offset
+		(void*)0					  // array buffer offset;
 	);
-
+	
 	// Draw the triangles !
 	glDrawArrays(GL_TRIANGLES, 0, 2*3); // 2*3 indices starting at 0 -> 2 triangles
 
@@ -133,7 +132,7 @@ void Renderer::renderSprite(Camera* camera, Sprite* sprite, float px, float py, 
 	glDisableVertexAttribArray(vertexUVID);
 }
 
-void Renderer::renderEntity(glm::mat4 modelMatrix, Entity* entity, Camera* camera) {
+void Renderer::renderEntity(Entity* entity, Camera* camera) {
 
 	// OpenGL doesn't understand our Point3. Make it glm::vec3 compatible.
 	glm::vec3 position = glm::vec3(entity->position.x, entity->position.y, entity->position.z);
@@ -149,16 +148,7 @@ void Renderer::renderEntity(glm::mat4 modelMatrix, Entity* entity, Camera* camer
 
 	// multiply ModelMatrix for this entity with the ModelMatrix of its parent (the caller of this method)
 	// the first time we do this (for the root-parent), modelMatrix is identity.
-	modelMatrix *= mm;
-
-	// send the real world transforms back to Entity (glm::decompose is experimental)
-	glm::vec3 realscale;
-	glm::quat realrot;
-	glm::vec3 realpos;
-	glm::vec3 skew;
-	glm::vec4 perspective;
-	glm::decompose(modelMatrix, realscale, realrot, realpos, skew, perspective);
-	// #######################################################
+	//modelMatrix *= mm;
 
 	// Check for Sprites to see if we need to render anything
 	Sprite* sprite = entity->sprite();

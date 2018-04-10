@@ -1,18 +1,25 @@
 #include <dengine/camera.h>
 
-glm::mat4 _viewMatrix;
+
 
 Camera::Camera() {
-
+	
+	// Initial position : on +Z
+	position = glm::vec3(0,0,5);
+	cursor = glm::vec3(0, 0, 0);
+	_viewMatrix = glm::lookAt(
+		position, // Camera is at (xpos,ypos,5), in World Space
+		position + glm::vec3(0, 0, -5), // and looks towards Z
+		glm::vec3(0, 1, 0)  // Head is up (set to 0,-1,0 to look upside-down)
+	);
+	speed = 300.0f; // 300 units / second
 }
 
 Camera::~Camera() {
 
 }
 
-// Initial position : on +Z
-glm::vec3 position = glm::vec3( 0, 0, 5 );
-glm::vec3 cursor = glm::vec3( 0, 0, 0 );
+
 
 glm::mat4 Camera::getViewMatrix(){
 	return _viewMatrix;
@@ -22,7 +29,7 @@ glm::vec3 Camera::getCursor(){
 	return cursor;
 }
 
-float speed = 300.0f; // 300 units / second
+
 
 
 void Camera::computeMatricesFromInputs(GLFWwindow* window)

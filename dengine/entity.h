@@ -12,7 +12,7 @@
 #include <glm/gtx/matrix_decompose.hpp>
 
 #include <dengine/sprite.h>
-#include <dengine/dengineconfig.h>
+#include <dengine/camera.h>
 
 class Entity {
 public:
@@ -22,32 +22,12 @@ public:
 	/// @brief update this Entity. This function is Pure virtual. User MUST implement this in subclass.
 	/// @param deltaTime The time that's passed since the last update.
 	 /// @return void
-	virtual void update(float deltaTime) = 0;
+	virtual void update(float deltaTime) {};
 
 	// transform
 	glm::vec3 position; /**< @brief The position of the Entity */
 	glm::vec3 rotation; /**< @brief The rotation of the Entity */
 	glm::vec3 scale; /**< @brief The scale of the Entity */
-
-	// data structure
-	/// @brief add an Entity as a child of this Entity.
-	/// Defines the data structure (parent/children relationship)
-	/// @param child The Entity you want to add as a child.
-	/// @return void
-	void addChild(Entity* child);
-
-	/// @brief remove this Entity from list of children.
-	/// @param child The Entity you want to remove from your children.
-	/// @return void
-	void removeChild(Entity* child);
-
-	Entity* getChild(unsigned int i);
-	/// @brief get the list of children.
-	/// @return std::vector<Entity*>& _children
-	const std::vector<Entity*>& children() { return _children; };
-	/// @brief get the spritebatch of this Entity.
-	/// @return std::vector<Sprite*>& _spritebatch
-	std::vector<Sprite*>& spritebatch() { return _spritebatch; };
 
 	// sprite
 	/// @brief get the Sprite from this Entity.
@@ -68,17 +48,9 @@ public:
 	/// @return void
 	void addSprite(const std::string& filename, float pivotx, float pivoty);
 
-	/// @brief get the parent of this Entity.
-	/// @return Entity* _parent
-	Entity* parent() { return _parent; };
-
 	friend class Renderer;
 
 private:
-	Entity* _parent; ///< @brief The _parent of this Entity4
-	std::vector<Entity*> _children; ///< @brief The _children of this Entity
-
-	std::vector<Sprite*> _spritebatch; ///< @brief The _spritebatch of this Entity
 
 	// sprite
 	Sprite* _sprite; ///< @brief The _sprite of this Entity
@@ -88,14 +60,6 @@ private:
 			delete _sprite;
 			_sprite = NULL;
 		}
-	};
-
-	void deleteSpritebatch() {
-		int s = _spritebatch.size();
-		for (int i = 0; i < s; i++) {
-			delete _spritebatch[i];
-		}
-		_spritebatch.clear();
 	};
 };
 

@@ -6,32 +6,43 @@
 
 #include <dengine/renderer.h>
 #include <dengine/camera.h>
+#include <dengine/entity.h>
 #include <dengine/sprite.h>
 
 int main( void )
 {
 	Renderer renderer(1280, 720);
 
-	Sprite* pencils = new Sprite("assets/pencils.tga");
-	Sprite* kingkong = new Sprite("assets/kingkong.tga");
-	Sprite* rgba = new Sprite("assets/rgba.tga");
+	Camera* camera = new Camera();
+
+	Entity* pencils = new Entity();
+	Entity* kingkong = new Entity();
+	Entity* rgba = new Entity();
+
+	pencils->position = glm::vec3(400, 300, 0);
+	kingkong->position = glm::vec3(900, 400, 0);
+	rgba->position = glm::vec3(renderer.width() / 2, renderer.height() / 2, 0);
 
 	float rot_z = 0.0f;
+
+	pencils->addSprite("assets/pencils.tga");
+	kingkong->addSprite("assets/kingkong.tga");
+	rgba->addSprite("assets/rgba.tga");
 
 	do {
 		// Clear the screen
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 		// Compute the ViewMatrix from keyboard and mouse input (see: camera.h/cpp)
-		computeMatricesFromInputs(renderer.window());
+		camera->computeMatricesFromInputs(renderer.window());
 
 		//glm::vec3 cursor = getCursor(); // from Camera
 		//printf("(%f,%f)\n",cursor.x, cursor.y);
 
-		// Render all Sprites (Sprite*, xpos, ypos, xscale, yscale, rotation)
-		renderer.renderSprite(pencils, 400, 300, 1.0f, 1.0f, 0.0f);
-		renderer.renderSprite(kingkong, 900, 400, 1.0f, 1.0f, 0.0f);
-		renderer.renderSprite(rgba, renderer.width()/2, renderer.height()/2, 3.0f, 3.0f, rot_z);
+		// Render all Entit (Entity* entity, Camera* camera, float px, float py, float sx, float sy, float rot)
+		renderer.renderEntity(pencils, camera);
+		renderer.renderEntity(kingkong, camera);
+		renderer.renderEntity(rgba, camera);
 		rot_z += 0.03f;
 
 		// Swap buffers
@@ -45,6 +56,7 @@ int main( void )
 	delete pencils;
 	delete kingkong;
 	delete rgba;
+	delete camera;
 
 	// Close OpenGL window and terminate GLFW
 	glfwTerminate();

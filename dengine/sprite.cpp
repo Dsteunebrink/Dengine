@@ -12,23 +12,14 @@ Sprite::Sprite() {
 
 	_texturename = AUTOGENWHITE;
 
-	_fragmentshader = SPRITEFRAGMENTSHADER;
-	_vertexshader = SPRITEVERTEXSHADER;
-
-	spriteposition = glm::vec3(0.0f, 0.0f, 0.0f); // spritebatch only
-	spriterotation = glm::vec3(0.0f, 0.0f, 0.0f); // spritebatch only
-	spritescale = glm::vec3(1.0f, 1.0f, 1.0f); // spritebatch only
+	spriteposition = glm::vec3(0.0f, 0.0f, 0.0f);
+	spriterotation = glm::vec3(0.0f, 0.0f, 0.0f);
+	spritescale = glm::vec3(1.0f, 1.0f, 1.0f);
 
 	pivot = glm::vec2(0.5f, 0.5f);
 	uvdim = glm::vec2(1.0f, 1.0f);
 	uvoffset = glm::vec2(0.0f, 0.0f);
 	size = glm::vec2(0, 0);
-
-	for (size_t i = 0; i < 8; i++) {
-		customParams[i] = glm::vec3(0.0f, 0.0f, 0.0f);
-	}
-
-	//_palette = NULL;
 
 	_frame = 0;
 
@@ -37,16 +28,6 @@ Sprite::Sprite() {
 
 	_width = 0;
 	_height = 0;
-
-	//_dyntexture = NULL;
-	_dynamic = false;
-
-	_circlemesh = 0; // false
-	_which = -1; // disabled
-
-	_useculling = 0;
-
-	//color = RGBAColor(255, 255, 255, 255);
 }
 
 Sprite::Sprite(std::string image_path)
@@ -54,6 +35,9 @@ Sprite::Sprite(std::string image_path)
 	// these will be set correctly in loadTGA()
 	_width = 0;
 	_height = 0;
+
+	_fragmentshader = SPRITEFRAGMENTSHADER;
+	_vertexshader = SPRITEVERTEXSHADER;
 
 	// Load image as texture
 	_texture = loadTGA(image_path.c_str());
@@ -84,7 +68,7 @@ Sprite::Sprite(std::string image_path)
 	glGenBuffers(1, &_vertexbuffer);
 	glBindBuffer(GL_ARRAY_BUFFER, _vertexbuffer);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(g_vertex_buffer_data), g_vertex_buffer_data, GL_STATIC_DRAW);
-
+	
 	glGenBuffers(1, &_uvbuffer);
 	glBindBuffer(GL_ARRAY_BUFFER, _uvbuffer);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(g_uv_buffer_data), g_uv_buffer_data, GL_STATIC_DRAW);
@@ -100,24 +84,6 @@ Sprite::~Sprite()
 void Sprite::setupSprite(const std::string& filename, float pivotx, float pivoty, float uvwidth, float uvheight)
 {
 	this->setupSprite(filename, pivotx, pivoty, uvwidth, uvheight, DEFAULTFILTER, DEFAULTWRAP);
-}
-
-void Sprite::setupCircleSprite(const std::string& filename, int radius, int segments)
-{
-	this->setupSegmentSprite(filename, radius, segments, -1);
-}
-
-void Sprite::setupSegmentSprite(const std::string& filename, int radius, int segments, int which)
-{
-	_texturename = filename;
-	_circlemesh = segments; // only a single segment (triangle)
-	_which = which; // which segment
-
-	_filter = DEFAULTFILTER;
-	_wrap = DEFAULTWRAP;
-
-	size.x = radius * 2;
-	size.y = radius * 2;
 }
 
 void Sprite::setupSprite(const std::string& filename, float pivotx, float pivoty, float uvwidth, float uvheight, int filter, int wrap)
