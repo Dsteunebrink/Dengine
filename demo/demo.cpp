@@ -23,8 +23,6 @@ int main( void )
 	kingkong->position = glm::vec3(900, 400, 0);
 	rgba->position = glm::vec3(renderer.width() / 2, renderer.height() / 2, 0);
 
-	float rot_z = 0.0f;
-
 	pencils->addSprite("assets/pencils.tga");
 	kingkong->addSprite("assets/kingkong.tga");
 	rgba->addSprite("assets/rgba.tga");
@@ -43,7 +41,6 @@ int main( void )
 		renderer.renderEntity(pencils, camera);
 		renderer.renderEntity(kingkong, camera);
 		renderer.renderEntity(rgba, camera);
-		rot_z += 0.03f;
 
 		// Swap buffers
 		glfwSwapBuffers(renderer.window());

@@ -6,7 +6,7 @@
 #include <glm/gtx/euler_angles.hpp>
 
 #include <dengine/sprite.h>
-#include <dengine/dengineconfig.h>
+#include <dengine/config.h>
 
 Sprite::Sprite() {
 

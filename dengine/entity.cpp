@@ -1,7 +1,7 @@
 #include <iostream>
 
 #include <dengine/entity.h>
-#include <dengine/dengineconfig.h>
+#include <dengine/config.h>
 
 Entity::Entity() {
 	position = glm::vec3(0.0f, 0.0f, 0.0f);

@@ -9,7 +9,6 @@
 #include <vector>
 
 #include <glm/glm.hpp>
-#include <glm/gtx/matrix_decompose.hpp>
 
 #include <dengine/sprite.h>
 #include <dengine/camera.h>

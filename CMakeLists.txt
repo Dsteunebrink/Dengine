@@ -61,12 +61,13 @@ add_definitions(
 add_library(dengine
 	dengine/camera.h
 	dengine/camera.cpp
-	dengine/dengineconfig.h
-	dengine/dengineconfig.cpp
+	dengine/config.h
 	dengine/entity.h
 	dengine/entity.cpp
 	dengine/renderer.h
 	dengine/renderer.cpp
+	dengine/input.h
+	dengine/input.cpp
 	dengine/sprite.h
 	dengine/sprite.cpp
 )
