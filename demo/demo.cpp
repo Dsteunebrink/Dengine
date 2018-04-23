@@ -8,6 +8,7 @@
 #include <dengine/camera.h>
 #include <dengine/entity.h>
 #include <dengine/sprite.h>
+#include <dengine/input.h>
 
 int main( void )
 {
@@ -41,6 +42,9 @@ int main( void )
 		renderer.renderEntity(pencils, camera);
 		renderer.renderEntity(kingkong, camera);
 		renderer.renderEntity(rgba, camera);
+
+		pencils->rotation += 1;
+		kingkong->rotation -= 1;
 
 		// Swap buffers
 		glfwSwapBuffers(renderer.window());

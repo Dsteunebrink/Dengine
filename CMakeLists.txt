@@ -75,6 +75,7 @@ add_library(dengine
 # Demo
 add_executable(demo
 	demo/demo.cpp
+	demo/demo.h
 )
 target_link_libraries(demo
 	dengine
